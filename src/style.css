@@ -1,0 +1,123 @@
+#app{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container{
+    font-family: 'Roboto';
+}
+
+.homePage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.homeUser{
+    display: flex;
+}
+
+.btn{
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+.btn.get{
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.label{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-weight: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.5rem;
+}
+
+.lista{
+    margin-top: 20px;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+}
+.itemLabel{
+    margin-top: 10px;
+}
+
+.menu ul{
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    background-color: #1b242c;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.menu li{
+    cursor: pointer;
+    user-select: none;
+}
+.menu a {
+    color: #ccc;
+    display: flex;
+    justify-content: center;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-family: "Inter", "sans-serif";
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+.menu a:hover {
+    color: #fff;
+}
+.menu .active {
+    /* background-color: #2392f0; */
+    border-radius: 8px;
+    /* border: 2px solid #ccc; */
+}
+.menu .active a {
+    color: #fff;
+}
+
+.menu.user ul{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    list-style: none;
+    background-color: #fff;
+    padding-left: 20px;
+    padding-right: 30px;
+}
+.menu.user li{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border: 2px solid #2392f0;
+    border-radius: 8px;
+}
+.menu.user li:hover{
+    background-color: #2392f0;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+}
+.menu.user a{
+    color: #000;
+    font-weight: 300;
+}
+.menu.user a:hover {
+    color: #fff;
+}
+.menu.user .active {
+    background-color: #2392f0;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+}
+.menu.user .active a {
+    color: #fff;
+}
