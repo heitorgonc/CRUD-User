@@ -1,50 +1,112 @@
 <template>
     <b-card class="container">
-        <!-- <b-button  class="btn" @click="getUsers()" variant="primary" size="lg">
-            Get Users
-        </b-button> -->
+        <b-alert show dismissible v-for="mesage in mesages" :key="mesage.text" :variant="mesage.type">
+            {{mesage.text}}
+        </b-alert>
         <b-list-group class="lista">
-            <b-list-group-item class="item" v-for="(childUser, childId) in childUsers" :key="childId">
-                <div class="itemLabel"><strong>Name: </strong>{{childUser.name}}</div>
-                <div class="itemLabel"><strong>Email: </strong>{{childUser.email}}</div>
-                <div class="itemLabel"><strong>ID: </strong>{{childId}}</div>
+            <b-list-group-item class="item" v-for="(user, id) in users" :key="id">
+                <div class="itemLabel"><strong>Name: </strong>{{user.name}}</div>
+                <div class="itemLabel"><strong>Email: </strong>{{user.email}}</div>
+                <div class="itemLabel"><strong>ID: </strong>{{id}}</div>
                 <b-button class="btn get" variant="danger" size="lg"
-                    @click="exclude(childId)">Exclude
+                    @click="exclude(id)">Exclude
                 </b-button>
             </b-list-group-item>
         </b-list-group>
+        
     </b-card>
 </template>
 <script>
 
 export default {
-    data(){
-        return{
-            childUsers: this.users,
-            childId: this.id,
-            childUser: this.user
-        }
-    },
-    props:{
-        users: {type: Array, required: true},
-        id: {type: Number},
-        user: {type: Object, required: true},
-        clear: {type: Function},
-        save: {type: Function}
-    },
     methods:{
-        exclude(childId){
-            this.$http.delete(`/users/${childId}.json`)
-                .then(() => this.getUsers())
+        exclude(id){
+            this.$http.delete(`/users/${id}.json`)
+                .then( 
+                    () => {
+                        this.sucsMesage()
+                        setTimeout(
+                            () => {
+                                this.clearForm()
+                                this.getAllUsers()
+                            }, 
+                            600
+                        )
+                    },
+                )
+                .catch(
+                    () => { 
+                        this.falMesage() 
+                        setTimeout(
+                            () => {
+                                this.clearForm()
+                            }, 
+                            600
+                        )
+                    },
+                )
         },
-        getUsers(){
-            this.$http('users.json').then(res => {this.childUsers = res.data})
-                .then( () => this.clear())
+        getAllUsers(){
+            this.$http('users.json').then(res => {this.users = res.data})
+        },
+        sucsMesage(){
+            const mesage = {
+                text: 'Exclude Success',
+                type: 'success'
+            }
+            this.$store.commit('successMesage', mesage)
+        },
+        clearForm(){
+			const payload = {
+                user: {name: '',email: ''}, id: null, mesages: []
+            }
+            this.$store.commit('clear', payload)
+		},
+        falMesage(){
+            const mesage = {
+                text: 'Exclude Error',
+                type: 'danger'
+            }
+            this.$store.commit('faliedMesage', mesage)
         }
     },
     created(){
-        this.getUsers()
-    }
+        this.getAllUsers()
+    },
+    computed: {
+        users: {
+            get(){
+                return this.$store.state.users
+            },
+            set(users){
+                this.$store.commit('setUsers', users)
+            }
+        },
+        user: {
+            get(){
+                return this.$store.state.user
+            },
+            set(user){
+                this.$store.commit('setUser', user)
+            }
+        },
+        id:{
+            get(){
+                return this.$store.state.id
+            },
+            set(id){
+                this.$store.commit('setId', id)
+            }
+        },
+        mesages:{
+            get(){
+                return this.$store.state.mesages
+            },
+            set(mesages){
+                this.$store.commit('setMesages', mesages)
+            }
+        }
+    },
 }
 </script>
 <style>
