@@ -30,6 +30,12 @@ export default new Vuex.Store({
         },
         setUsers(state, payload){
             state.users = payload
+        },
+        setUser(state, payload){
+            state.user = payload
+        },
+        setId(state, payload){
+            state.id = payload
         }
     }
 })

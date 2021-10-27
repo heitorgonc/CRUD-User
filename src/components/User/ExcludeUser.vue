@@ -1,24 +1,30 @@
 <template>
-    <b-card class="container">
+    <div class="container">
+        <way-user-exclude></way-user-exclude>
         <b-alert show dismissible v-for="mesage in mesages" :key="mesage.text" :variant="mesage.type">
-            {{mesage.text}}
-        </b-alert>
-        <b-list-group class="lista">
-            <b-list-group-item class="item" v-for="(user, id) in users" :key="id">
-                <div class="itemLabel"><strong>Name: </strong>{{user.name}}</div>
-                <div class="itemLabel"><strong>Email: </strong>{{user.email}}</div>
-                <div class="itemLabel"><strong>ID: </strong>{{id}}</div>
-                <b-button class="btn get" variant="danger" size="lg"
-                    @click="exclude(id)">Exclude
-                </b-button>
-            </b-list-group-item>
-        </b-list-group>
-        
-    </b-card>
+                {{mesage.text}}
+            </b-alert>
+        <b-card>
+            <b-list-group class="lista">
+                <b-list-group-item class="item" v-for="(user, id) in users" :key="id">
+                    <div class="itemLabel"><strong>Name: </strong>{{user.name}}</div>
+                    <div class="itemLabel"><strong>Email: </strong>{{user.email}}</div>
+                    <div class="itemLabel"><strong>ID: </strong>{{id}}</div>
+                    <b-button class="btn get" variant="danger" size="lg"
+                        @click="exclude(id)">Exclude
+                    </b-button>
+                </b-list-group-item>
+            </b-list-group>
+        </b-card>
+    </div>
 </template>
 <script>
+import WayUserExclude from '../templates/way/user/WayUserExclude.vue'
 
 export default {
+    components:{
+        WayUserExclude
+    },
     methods:{
         exclude(id){
             this.$http.delete(`/users/${id}.json`)

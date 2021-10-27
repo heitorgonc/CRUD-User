@@ -1,15 +1,26 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import HomePage from '../components/HomePage'
-import HomeUser from '../components/User/HomeUser'
-import RegisterUser from '../components/User/RegisterUser'
-import ExludeUser from '../components/User/ExcludeUser'
-
 Vue.use(Router)
+
+const HomePage = () => import('../components/HomePage')
+const User = () => import('../components/User/User')
+const HomeUser = () => import('../components/User/HomeUser')
+const RegisterUser = () => import('../components/User/RegisterUser')
+const EditUser = () => import('../components/User/EditUser')
+const ExcludeUser = () => import('../components/User/ExcludeUser')
 
 export default new Router({
   mode: 'history',
+  scrollBehavior(to, from, savedPosition) {
+    if(savedPosition) {
+        return savedPosition
+    } else if(to.hash) {
+        return { selector: to.hash }
+    } else{
+        return { x: 0, y: 0 }
+    }
+  },
   routes: [
     {
       path: '/',
@@ -17,15 +28,27 @@ export default new Router({
     },
     {
       path: '/users',
-      component: HomeUser,
+      component: User,
       children: [
+        {
+          path:'',
+          component: HomeUser
+        },
         {
           path:'register',
           component: RegisterUser
         },
         {
+          path: 'edit',
+          component: EditUser
+        },
+        {
           path:'exclude',
-          component: ExludeUser
+          component: ExcludeUser
+        },
+        {
+          path: '*',
+          redirect: '/'
         }
       ]
     },

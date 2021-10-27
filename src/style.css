@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.homeUser{
+.user{
     display: flex;
 }
 
@@ -86,7 +86,7 @@
     color: #fff;
 }
 
-.menu.user ul{
+.menu.home.user ul{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -95,29 +95,65 @@
     padding-left: 20px;
     padding-right: 30px;
 }
-.menu.user li{
+.menu.home.user li{
     margin-top: 20px;
     margin-bottom: 10px;
     border: 2px solid #2392f0;
     border-radius: 8px;
 }
-.menu.user li:hover{
+.menu.home.user li:hover{
     background-color: #2392f0;
     border-radius: 8px;
     border: 2px solid #ccc;
 }
-.menu.user a{
+.menu.home.user a{
     color: #000;
     font-weight: 300;
 }
-.menu.user a:hover {
+.menu.home.user a:hover {
     color: #fff;
 }
-.menu.user .active {
+.menu.home.user .active {
     background-color: #2392f0;
     border-radius: 8px;
     border: 2px solid #ccc;
 }
-.menu.user .active a {
+.menu.home.user .active a {
     color: #fff;
+}
+
+.way ul{
+    display: flex;
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.way li{
+    cursor: pointer;
+    user-select: none;
+}
+.way a {
+    color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    font-family: "Inter", "sans-serif";
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 1rem;
+}
+.way a:hover {
+    color: rgb(52, 63, 218);
+}
+.way .active {
+    /* background-color: #2392f0; */
+    border-radius: 8px;
+    /* border: 2px solid #ccc; */
+}
+.way .active a {
+    color: rgb(52, 63, 218);
+}
+.way-separator{
+    margin-left: 5px;
+    margin-right: 5px;
 }

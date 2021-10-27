@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Menu from './components/templates/Menu.vue'
+import Menu from './components/templates/menus/Menu.vue'
 export default{
   components:{
     Menu

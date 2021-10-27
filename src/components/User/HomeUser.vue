@@ -1,16 +1,15 @@
 <template>
     <div class="homeUser">
-        <MenuUser></MenuUser>
-        <router-view></router-view>
+        <way-user-home></way-user-home>
     </div>
 </template>
 
 <script>
-import MenuUser from '../templates/MenuUser.vue'
+import WayUserHome from '../templates/way/user/WayUserHome.vue'
 
 export default {
     components:{
-        MenuUser
+        WayUserHome,
     }
 }
 </script>
