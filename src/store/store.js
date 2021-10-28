@@ -13,29 +13,50 @@ export default new Vuex.Store({
         },
         mesages: [],
     },
-    getters: {
-        
-    },
+    // getters: {
+    //     user(state){
+    //         return state.user
+    //     },
+    //     mesages(state){
+    //         return state.mesages
+    //     },
+    //     users(state){
+    //         return state.user
+    //     },
+    //     id(state){
+    //         return state.id
+    //     }
+    // },
     mutations:{
-        clear(state, payload){
-            state.user = payload.user
-            state.mesages = payload.mesages
-            state.id = payload.id
+        setMesages(state, payload){
+            state.mesages = payload
         },
-        successMesage(state, payload){
-            state.mesages.push(payload)
+        setUser(state, payload){
+            state.user = payload
         },
-        faliedMesage(state, payload){
+        addMesage(state, payload){
             state.mesages.push(payload)
         },
         setUsers(state, payload){
             state.users = payload
         },
-        setUser(state, payload){
-            state.user = payload
-        },
         setId(state, payload){
             state.id = payload
+        }
+    },
+    actions: {
+        newMesageForm(context, payload){
+            setTimeout(() => {
+                context.commit('addMesage', payload)
+            }, 200)
+        },
+        clearForm(context, payload){
+            setTimeout(() => {
+                context.commit('setUser', payload.user)
+                context.commit('setMesages', payload.mesages)
+                // context.commit('setId', payload.id)
+                // context.commit('setUsers', payload.users)
+            }, 700)
         }
     }
 })

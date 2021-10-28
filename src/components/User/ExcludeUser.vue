@@ -20,34 +20,35 @@
 </template>
 <script>
 import WayUserExclude from '../templates/way/user/WayUserExclude.vue'
+import {mapActions} from 'vuex'
 
 export default {
     components:{
         WayUserExclude
     },
     methods:{
+        ...mapActions(['newMesageForm', 'clearForm']),
         exclude(id){
             this.$http.delete(`/users/${id}.json`)
                 .then( 
                     () => {
-                        this.sucsMesage()
+                        this.successMesage(),
+                        this.clear(),
                         setTimeout(
                             () => {
-                                this.clearForm()
                                 this.getAllUsers()
-                            }, 
-                            600
+                            }, 700
                         )
                     },
                 )
                 .catch(
                     () => { 
-                        this.falMesage() 
+                        this.faliedMesage(),
+                        this.clear(),
                         setTimeout(
                             () => {
-                                this.clearForm()
-                            }, 
-                            600
+                                this.getAllUsers()
+                            }, 700
                         )
                     },
                 )
@@ -55,25 +56,26 @@ export default {
         getAllUsers(){
             this.$http('users.json').then(res => {this.users = res.data})
         },
-        sucsMesage(){
-            const mesage = {
+        clear(){
+			const payload = {
+                user: {name: '',email: ''}, 
+                mesages: []
+            }
+            this.clearForm(payload)
+		},
+        successMesage(){
+            const payload = {
                 text: 'Exclude Success',
                 type: 'success'
             }
-            this.$store.commit('successMesage', mesage)
+            this.newMesageForm(payload)
         },
-        clearForm(){
-			const payload = {
-                user: {name: '',email: ''}, id: null, mesages: []
-            }
-            this.$store.commit('clear', payload)
-		},
-        falMesage(){
-            const mesage = {
+        faliedMesage(){
+            const payload = {
                 text: 'Exclude Error',
                 type: 'danger'
             }
-            this.$store.commit('faliedMesage', mesage)
+            this.newMesageForm(payload)
         }
     },
     created(){
@@ -107,9 +109,6 @@ export default {
         mesages:{
             get(){
                 return this.$store.state.mesages
-            },
-            set(mesages){
-                this.$store.commit('setMesages', mesages)
             }
         }
     },

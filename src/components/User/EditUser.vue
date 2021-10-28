@@ -40,6 +40,7 @@
 
 <script>
 import WayUserEdit from '../templates/way/user/WayUserEdit.vue'
+import {mapActions} from 'vuex'
 
 export default {
     data(){
@@ -51,77 +52,61 @@ export default {
         WayUserEdit
     },
     methods:{
+        ...mapActions(['newMesageForm', 'clearForm']),
         edit(id){
 			this.id = id
             this.load = true
 			this.user = { ...this.users[id]}
 		},
         save(){
-            const method = this.id ? 'patch' : 'post'
             const finalUrl = this.id ? `/${this.id}.json` : '.json'
-            this.$http[method](`/users${finalUrl}`, this.user)
+            this.$http.patch(`/users${finalUrl}`, this.user)
             .then( 
                 () => {
-                    this.sucsMesage()
-                    setTimeout(
-                        () => {
-                            this.clearForm()
-                            this.getAllUsers()
-                            this.load = false
-                        }, 
-                        600
-                    )
+                    this.successMesage()
+                    this.clear()
+                    setTimeout(() => {
+                        this.load = false
+                        this.getAllUsers()
+                    }, 700)
                 },
             )
             .catch(
                 () => {
-                    this.falMesage()
-                    setTimeout(
-                        () => {
-                            this.clearForm()
-                            this.getAllUsers()
-                        }, 
-                        600
-                    )
+                    this.successMesage()
+                    this.clear()
                 },
             )
         },
         getAllUsers(){
             this.$http('users.json').then(res => {this.users = res.data})
         },
-        sucsMesage(){
-            const mesage = {
-                text: 'Edit Success',
+        successMesage(){
+            const payload = {
+                text: 'Changes Saved',
                 type: 'success'
             }
-            this.$store.commit('successMesage', mesage)
+            this.newMesageForm(payload)
         },
-        clearForm(){
-			const payload = {
-                user: {name: '',email: ''}, id: null, mesages: []
-            }
-            this.$store.commit('clear', payload)
-		},
-        falMesage(){
-            const mesage = {
+        faliedMesage(){
+            const payload = {
                 text: 'Edit Error',
                 type: 'danger'
             }
-            this.$store.commit('faliedMesage', mesage)
+            this.newMesageForm(payload)
+        },
+        clear(){
+            const payload = {
+                mesages: [],
+                user: {email:'', name:''},
+            }
+            this.clearForm(payload)
         }
     },
     created(){
         this.getAllUsers()
     },
-    computed: {
-        users: {
-            get(){
-                return this.$store.state.users
-            },
-            set(users){
-                this.$store.commit('setUsers', users)
-            }
-        },
+    computed:{
         user: {
             get(){
                 return this.$store.state.user
@@ -138,12 +123,17 @@ export default {
                 this.$store.commit('setId', id)
             }
         },
-        mesages:{
+        users: {
+            get(){
+                return this.$store.state.users
+            },
+            set(users){
+                this.$store.commit('setUsers', users)
+            }
+        },
+        mesages: {
             get(){
                 return this.$store.state.mesages
-            },
-            set(mesages){
-                this.$store.commit('setMesages', mesages)
             }
         }
     },

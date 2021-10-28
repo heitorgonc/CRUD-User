@@ -27,75 +27,74 @@
 </template>
 <script>
 import WayUserRegister from '../templates/way/user/WayUserRegister.vue'
+import {mapActions} from 'vuex'
+
 export default {
     components:{
         WayUserRegister
     },
     methods:{
+        ...mapActions(['newMesageForm', 'clearForm']),
         save(){
-            const method = this.id ? 'patch' : 'post'
             const finalUrl = this.id ? `/${this.id}.json` : '.json'
-            this.$http[method](`/users${finalUrl}`, this.user)
+            this.$http.post(`/users${finalUrl}`, this.user)
             .then( 
                 () => {
-                    this.sucsMesage()
-                    setTimeout(
-                        () => {
-                            this.clearForm()
-                        }, 
-                        600
-                    )
+                    this.successMesage(),
+                    this.clear()
                 },
             )
             .catch(
                 () => {
-                    this.falMesage()
-                    setTimeout(
-                        () => {
-                            this.clearForm()
-                        }, 
-                        600
-                    )
+                    this.faliedMesage()
+                    this.clear()
                 },
             )
         },
-        clearForm(){
-			const payload = {
-                user: {name: '',email: ''}, id: null, mesages: []
+        clear(){
+            const payload = {
+                user:{
+                    name: '',
+                    email:'',
+                },
+                mesages: []
             }
-            this.$store.commit('clear', payload)
-		},
-        sucsMesage(){
-            const mesage = {
+            this.clearForm(payload)
+        },
+        successMesage(){
+            const payload = {
                 text: 'Save Success',
                 type: 'success'
             }
-            this.$store.commit('successMesage', mesage)
+            this.newMesageForm(payload)
         },
-        falMesage(){
-            const mesage = {
+        faliedMesage(){
+            const payload = {
                 text: 'Save Error',
                 type: 'danger'
             }
-            this.$store.commit('faliedMesage', mesage)
+            this.newMesageForm(payload)
         }
     },
-    computed: {
+    computed:{
         user: {
-            get(){return this.$store.state.user},
-            set(user){
-                this.$store.commit('setUser', user)
+            get(){
+                return this.$store.state.user
             }
         },
         id:{
-            get(){return this.$store.state.id}
+            get(){
+                return this.$store.state.id
+            }
         },
-        mesages:{
-            get(){return this.$store.state.mesages}
-        },
+        mesages: {
+            get(){
+                return this.$store.state.mesages
+            }
+        }
     },
     beforeRouteLeave(to, from, next) {
-        if( this.$store.state.user.name == '' && this.$store.state.user.email == '' ) {
+        if( this.user.name == '' && this.user.email == '' ) {
             next()
         } else{
             if(confirm('all changes will be undone, do you want to leave now ?')) {
@@ -109,6 +108,3 @@ export default {
     }
 }
 </script>
-<style>
-    
-</style>
