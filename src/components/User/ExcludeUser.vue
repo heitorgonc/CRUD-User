@@ -20,6 +20,7 @@
 </template>
 <script>
 import WayUserExclude from '../templates/way/user/WayUserExclude.vue'
+import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
 
 export default {
@@ -27,7 +28,8 @@ export default {
         WayUserExclude
     },
     methods:{
-        ...mapActions(['newMesageForm', 'clearForm']),
+        ...mapMutations('exclude', ['setUsers', 'setUser']),
+        ...mapActions('exclude',['newMesageForm', 'clearForm']),
         exclude(id){
             this.$http.delete(`/users/${id}.json`)
                 .then( 
@@ -58,8 +60,7 @@ export default {
         },
         clear(){
 			const payload = {
-                user: {name: '',email: ''}, 
-                mesages: []
+                mesages: [],
             }
             this.clearForm(payload)
 		},
@@ -84,31 +85,28 @@ export default {
     computed: {
         users: {
             get(){
-                return this.$store.state.users
+                return this.$store.state.exclude.users
             },
-            set(users){
-                this.$store.commit('setUsers', users)
+            set( users){
+                this.setUsers(users)
             }
         },
         user: {
             get(){
-                return this.$store.state.user
+                return this.$store.state.exclude.user
             },
-            set(user){
-                this.$store.commit('setUser', user)
+            set( user){
+                this.setUser(user)
             }
         },
         id:{
             get(){
-                return this.$store.state.id
-            },
-            set(id){
-                this.$store.commit('setId', id)
+                return this.$store.state.exclude.id
             }
         },
         mesages:{
             get(){
-                return this.$store.state.mesages
+                return this.$store.state.exclude.mesages
             }
         }
     },

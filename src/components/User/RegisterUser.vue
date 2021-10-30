@@ -34,7 +34,7 @@ export default {
         WayUserRegister
     },
     methods:{
-        ...mapActions(['newMesageForm', 'clearForm']),
+        ...mapActions('register', ['newMesageForm', 'clearForm']),
         save(){
             const finalUrl = this.id ? `/${this.id}.json` : '.json'
             this.$http.post(`/users${finalUrl}`, this.user)
@@ -79,17 +79,17 @@ export default {
     computed:{
         user: {
             get(){
-                return this.$store.state.user
+                return this.$store.state.register.user
             }
         },
         id:{
             get(){
-                return this.$store.state.id
+                return this.$store.state.register.id
             }
         },
         mesages: {
             get(){
-                return this.$store.state.mesages
+                return this.$store.state.register.mesages
             }
         }
     },
@@ -99,7 +99,7 @@ export default {
         } else{
             if(confirm('all changes will be undone, do you want to leave now ?')) {
                 next()
-                this.clearForm()
+                this.clear()
             } else {
                 next(false)
             }

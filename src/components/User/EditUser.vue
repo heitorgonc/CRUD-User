@@ -41,6 +41,7 @@
 <script>
 import WayUserEdit from '../templates/way/user/WayUserEdit.vue'
 import {mapActions} from 'vuex'
+import {mapMutations} from 'vuex'
 
 export default {
     data(){
@@ -52,7 +53,8 @@ export default {
         WayUserEdit
     },
     methods:{
-        ...mapActions(['newMesageForm', 'clearForm']),
+        ...mapActions('edit', ['newMesageForm', 'clearForm']),
+        ...mapMutations('edit', ['setUsers', 'setUser', 'setId']),
         edit(id){
 			this.id = id
             this.load = true
@@ -73,7 +75,7 @@ export default {
             )
             .catch(
                 () => {
-                    this.successMesage()
+                    this.faliedMesage()
                     this.clear()
                 },
             )
@@ -99,6 +101,7 @@ export default {
             const payload = {
                 mesages: [],
                 user: {email:'', name:''},
+                id: null
             }
             this.clearForm(payload)
         }
@@ -109,31 +112,31 @@ export default {
     computed:{
         user: {
             get(){
-                return this.$store.state.user
+                return this.$store.state.edit.user
             },
             set(user){
-                this.$store.commit('setUser', user)
+                this.setUser(user)
             }
         },
         id:{
             get(){
-                return this.$store.state.id
+                return this.$store.state.edit.id
             },
             set(id){
-                this.$store.commit('setId', id)
+                this.setId(id)
             }
         },
         users: {
             get(){
-                return this.$store.state.users
+                return this.$store.state.edit.users
             },
             set(users){
-                this.$store.commit('setUsers', users)
+                this.setUsers(users)
             }
         },
         mesages: {
             get(){
-                return this.$store.state.mesages
+                return this.$store.state.edit.mesages
             }
         }
     },
@@ -141,7 +144,7 @@ export default {
         if(this.load) {
             if(confirm('all changes will be undone, do you want to leave now ?')) {
                 next()
-                this.clearForm()
+                this.clear()
             } else {
                 next(false)
             }
